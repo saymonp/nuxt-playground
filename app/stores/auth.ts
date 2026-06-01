@@ -1,6 +1,3 @@
-import { defineStore } from 'pinia';
-
-const { $api } = useNuxtApp()
 
 interface User {
   id: number;
@@ -38,6 +35,7 @@ export const useAuthStore = defineStore('auth', {
       this.token = tokenData
     },
     async fetchUser() {
+      const { $api } = useNuxtApp()
       if (!this.token) return;
       try {
         const response = await $api<any>('/me'); // Rota no Laravel que retorna Auth::user()
@@ -47,10 +45,12 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     async login(credentials: any) {
+      const { $api } = useNuxtApp()
       const response = await $api<LoginResponse>('/login', { body: credentials, method: 'POST' });
       this.setUser(response.user, response.access_token);
     },
     async register(credentials: any) {
+      const { $api } = useNuxtApp()
       const response = await $api<LoginResponse>('/register',{ body: credentials, method: 'POST' });
       this.setUser(response.user, response.access_token);
     },
@@ -63,6 +63,7 @@ export const useAuthStore = defineStore('auth', {
       tokenCookie.value = null
     },
     async deleteAccount() {
+      const { $api } = useNuxtApp()
       const response = await $api<any>('/me/delete', { method: 'DELETE' });
       if (response.status === 200) {
         this.token = null;
@@ -75,11 +76,13 @@ export const useAuthStore = defineStore('auth', {
       return response.data;
     },
     async solicitarRecuperacao(data: { email: string }) {
+      const { $api } = useNuxtApp()
       const response = await $api<any>('/recover-password-request', { body: data, method: 'POST' });
 
       return response.data;
     },
     async redefinirSenha(data: { email: string, token: string, new_password: string }) {
+      const { $api } = useNuxtApp()
       const response = await $api<any>('/reset-password', { body: data, method: 'POST' });
       this.setUser(response.data.user, response.data.access_token);
     },

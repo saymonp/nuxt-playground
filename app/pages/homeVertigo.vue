@@ -256,7 +256,7 @@ const getMovieParam = (movie: any) => {
                         :key="movie.id" class="relative flex flex-col items-center w-full">
 
 
-                        <NuxtLink to="/" class="w-full">
+                        <NuxtLink :to="`movie/${movie.slug_en}`" class="w-full">
                             <MoviePoster :path="getImageUrl(movie.poster_thumb_br)" />
                         </NuxtLink>
 
